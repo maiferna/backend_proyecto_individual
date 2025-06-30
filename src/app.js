@@ -1,0 +1,29 @@
+
+const express = require('express');
+
+const cors = require('cors');
+
+const {connection} = require('./utils/dbconnect')
+
+require('dotenv').config();
+
+const port = process.env.PORT || 3000;
+
+const app = express();
+
+// Ejecutar conexión
+connection().catch((error) => {
+    console.log(error);
+})
+
+const whiteList = ['http://localhost:3000', 'http://xxxx-front.render.com'];
+app.use(cors({
+    origin: whiteList
+}));
+
+app.use(express.urlencoded());
+app.use(express.json());
+
+app.listen(port, () => {
+    console.log(`Server on port ${port}`);
+})
