@@ -7,7 +7,7 @@ const connection = async () => {
     const uri = process.env.URI_MONGO;
     try {
         const conexion = await mongoose.connect(uri);
-        console.log('Conectando bbdd');
+        console.log('Conectando a bd');
     } catch (error) {
         throw {
             ok: false,

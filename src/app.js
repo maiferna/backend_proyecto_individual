@@ -24,6 +24,8 @@ app.use(cors({
 app.use(express.urlencoded());
 app.use(express.json());
 
+app.use('/api/v1', require('./routes/prueba.routes'));
+
 app.listen(port, () => {
     console.log(`Server on port ${port}`);
 })
