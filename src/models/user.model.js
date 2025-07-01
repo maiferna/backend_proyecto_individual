@@ -1,7 +1,7 @@
 const {Schema, model} = require('mongoose');
 
 const User = new Schema({
-    nombre: {
+    name: {
         type: String, 
         required: true
     },
@@ -18,6 +18,15 @@ const User = new Schema({
         type: String,
         default: 'user',
         enum: ['admin', 'user']
+    },
+    intolerance: [{
+        type: String
+    }],
+    favorites: [{
+        //Recipes id objectId
+    }],
+    menu: {
+        // Menu id objectId
     }
 })
 
