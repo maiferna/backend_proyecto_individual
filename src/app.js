@@ -3,6 +3,8 @@ const express = require('express');
 
 const cors = require('cors');
 
+const userRoutes = require('./routes/user.routes')
+
 const {connection} = require('./utils/dbconnect')
 
 require('dotenv').config();
@@ -24,7 +26,8 @@ app.use(cors({
 app.use(express.urlencoded());
 app.use(express.json());
 
-app.use('/api/v1', require('./routes/prueba.routes'));
+//app.use('/api/v1', require('./routes/prueba.routes'));
+app.use('/api/v1', userRoutes);
 
 app.listen(port, () => {
     console.log(`Server on port ${port}`);
