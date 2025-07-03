@@ -1,8 +1,8 @@
-const {Schema, model} = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const User = new Schema({
     name: {
-        type: String, 
+        type: String,
         required: true
     },
     email: {
@@ -18,11 +18,15 @@ const User = new Schema({
     intolerance: [{
         type: String
     }],
+    // Cada elemento en favorites es un ObjectId que apunta a un documento de la colección Recipe.
+    // ObjectId: tipo de dato que actúa como identificador único para cada documento en una colección
     favorites: [{
-        //Recipes id objectId
+        type: Schema.Types.ObjectId,
+        ref: 'Recipe'
     }],
     menu: {
-        // Menu id objectId
+        type: Schema.Types.ObjectId,
+        ref: 'Menu'
     }
 })
 

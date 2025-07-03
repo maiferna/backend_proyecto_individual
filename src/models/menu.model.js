@@ -1,13 +1,15 @@
-const {Schema, model} = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const Menu = new Schema({
     user: {
-        // user_id object id
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
-    recipe: {
-        // recipe_id object id
-    },
-    list: [{
+    recipes: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Recipe'
+    }],
+    shoplist: [{
         name: {
             type: String
         },

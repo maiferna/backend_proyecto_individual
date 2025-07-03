@@ -1,8 +1,8 @@
-const {Schema, model} = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const Recipe = new Schema({
     name: {
-        type: String, 
+        type: String,
         required: true
     },
     ingredients: [{
@@ -13,7 +13,7 @@ const Recipe = new Schema({
             type: String
         }
     }],
-    image_url: {
+    image: {
         type: String
     },
     difficulty: {
@@ -29,9 +29,9 @@ const Recipe = new Schema({
     intolerance: [{
         type: String
     }],
-    steps: {
+    steps: [{
         type: String
-    }
+    }]
 })
 
 module.exports = model('Recipes', Recipe);
