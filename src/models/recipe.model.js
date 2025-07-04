@@ -30,9 +30,9 @@ const Recipe = new Schema({
     intolerance: [{
         type: String
     }],
-    steps: [{
+    steps: {
         type: String
-    }]
+    }
 })
 
 module.exports = model('Recipes', Recipe);
