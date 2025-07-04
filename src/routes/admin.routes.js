@@ -13,7 +13,7 @@ router.post('/create', upload.single('image'), createRecipe)
 
 // Editar receta según su id (PUT)
 // PUT: http://localhost:3000/api/v1/admin/edit/:id
-router.put('/edit/:id', editRecipe)
+router.put('/edit/:id', upload.single('image'), editRecipe)
 
 // Eliminar receta por su id (DELETE)
 // DELETE: http://localhost:3000/api/v1/admin/delete/:id
