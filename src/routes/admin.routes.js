@@ -1,15 +1,28 @@
 const { Router } = require('express');
 const upload = require('../middlewares/multer');
+const { check } = require('express-validator');
 const {
     createRecipe,
     editRecipe,
-    deleteRecipe
-} = require('../controllers/admin.controllers')
+    deleteRecipe,
+    getAllUsers,
+    editUser,
+    deleteUser
+} = require('../controllers/admin.controllers');
+const { validateInput } = require('../middlewares/validateInput');
 const router = Router();
 
 // Crear una receta nueva
 // POST: http://localhost:3000/api/v1/admin/create
-router.post('/create', upload.single('image'), createRecipe)
+router.post('/create', [
+    upload.single('image'),
+    check("name", "name es requerido").notEmpty().isString(),
+    check("ingredients", "ingredients es requerida").notEmpty(),
+    check("prepTime", "prepTime es requerida").notEmpty().isString(),
+    check("difficulty", "difficulty es requerido").notEmpty().isString(),
+    check("steps", "steps es requerido").notEmpty().isString(),
+    validateInput],
+    createRecipe)
 
 // Editar receta según su id (PUT)
 // PUT: http://localhost:3000/api/v1/admin/edit/:id
@@ -18,5 +31,17 @@ router.put('/edit/:id', upload.single('image'), editRecipe)
 // Eliminar receta por su id (DELETE)
 // DELETE: http://localhost:3000/api/v1/admin/delete/:id
 router.delete('/delete/:id', deleteRecipe)
+
+// Obtener usuarios
+// GET: http://localhost:3000/api/v1/admin/users
+router.get('/users', getAllUsers);
+
+// Editar rol del usuario
+// POST: http://localhost:3000/api/v1/admin/user/:id
+router.post('/user/:id', editUser);
+
+// Eliminar usuario
+// DELETE: http://localhost:3000/api/v1/admin/user/delete/:id
+router.delete('/user/delete/:id', deleteUser);
 
 module.exports = router;

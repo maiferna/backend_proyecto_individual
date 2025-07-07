@@ -1,5 +1,6 @@
 
 const Recipe = require('../models/recipe.model')
+const User = require('../models/user.model')
 
 // Función para crear una receta
 // Recibe la data del formulario y la imagen del req.file
@@ -19,8 +20,8 @@ const createRecipe = async (req, res) => {
             msg: 'La receta ya existe.'
         })
     }
-    const recipe = new Recipe(data);
     try {
+        const recipe = new Recipe(data);
         const savedRecipe = await recipe.save();
         return res.status(201).json({
             ok: true,
@@ -98,8 +99,82 @@ const deleteRecipe = async (req, res) => {
 }
 
 
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find()
+        return res.status(200).json({
+            ok: true,
+            users
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Contacte con el administrador.'
+        })
+    }
+}
+
+
+const editUser = async (req, res) => {
+    const { id } = req.params;
+    const { role } = req.body;
+    console.log('ROL', role)
+    try {
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Usuario no encontrado.'
+            })
+        }
+        user.role = role;
+        await user.save();
+        return res.status(200).json({
+            ok: true,
+            user
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Contacte con el administrador.'
+        })
+    }
+}
+
+
+const deleteUser = async (req, res) => {
+    const {id} = req.params;
+
+    try {
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Usuario no encontrado.'
+            })
+        }
+        const data = await User.deleteOne({_id: id});
+        return res.status(200).json({
+            ok: true,
+            msg: "Usuario eliminado."
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Contacte con el administrador.'
+        })
+    }
+}
+
+
 module.exports = {
     createRecipe,
     editRecipe,
-    deleteRecipe
+    deleteRecipe,
+    getAllUsers,
+    editUser,
+    deleteUser
 }

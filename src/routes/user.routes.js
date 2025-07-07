@@ -8,7 +8,10 @@ const {
     addRecipeToFavorite,
     removeRecipeFromFavorite,
     getAllFavoriteRecipes
-} = require('../controllers/user.controllers')
+} = require('../controllers/user.controllers');
+
+const { validateInput } = require('../middlewares/validateInput');
+const { check } = require('express-validator');
 
 const router = Router();
 
@@ -22,7 +25,10 @@ router.get('/recipes/:category', getRecipesByCategory);
 
 // Obtener recetas por ingredientes
 // POST: http://localhost:3000/api/v1/recipes/ingredients
-router.post('/recipes/ingredients', getRecipesByIngredients);
+router.post('/recipes/ingredients',
+    check("ingredients", "ingredients es requerido").notEmpty(),
+    validateInput,
+    getRecipesByIngredients);
 
 // Obtener información de la receta por id
 // GET: http://localhost:3000/api/v1/recipe/:id

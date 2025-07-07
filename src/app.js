@@ -8,6 +8,7 @@ const path = require('path');
 
 const userRoutes = require('./routes/user.routes');
 const adminRoutes = require('./routes/admin.routes');
+const authRoutes = require('./routes/auth.routes');
 
 const {connection} = require('./utils/dbconnect');
 
@@ -22,7 +23,7 @@ connection().catch((error) => {
     console.log(error);
 })
 
-const whiteList = ['http://localhost:3000', 'https://backend-proyecto-individual-xvef.onrender.com'];
+const whiteList = ['http://localhost:3000', 'https://backend-proyecto-individual-xvef.onrender.com', 'http://localhost:5173'];
 app.use(cors({
     origin: whiteList
 }));
@@ -38,6 +39,7 @@ app.use(express.json());
 app.use('/api/v1/prueba', require('./routes/prueba.routes'));
 app.use('/api/v1', userRoutes);
 app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/auth', authRoutes);
 
 
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swagger));
