@@ -37,8 +37,8 @@ router.delete('/delete/:id', deleteRecipe)
 router.get('/users', getAllUsers);
 
 // Editar rol del usuario
-// POST: http://localhost:3000/api/v1/admin/user/:id
-router.post('/user/:id', editUser);
+// PUT: http://localhost:3000/api/v1/admin/user/:id
+router.put('/user/:id', editUser);
 
 // Eliminar usuario
 // DELETE: http://localhost:3000/api/v1/admin/user/delete/:id

@@ -58,6 +58,7 @@ const getRecipesByIngredients = async (req, res) => {
             msg: 'Es necesario ingresar al menos un ingrediente.'
         })
     }
+    // Esto gestionarlo en el front
     if (ingredients.length === 1) {
         return res.status(200).json({
             ok: true,
