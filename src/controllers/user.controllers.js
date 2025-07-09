@@ -1,6 +1,7 @@
 
 const Recipe = require('../models/recipe.model')
 const User = require('../models/user.model')
+const mongoose = require('mongoose');
 
 // Función que devuelve todas las recetas
 const getAllRecipes = async (req, res) => {
@@ -164,6 +165,13 @@ const addRecipeToFavorite = async (req, res) => {
     }
     try {
         const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Usuario no encontrado'
+            });
+        }
+
         //comprobar si el usuario tiene la receta en favoritos
         const recipeExists = user.favorites.includes(recipeId);
         if (recipeExists) {
@@ -172,8 +180,10 @@ const addRecipeToFavorite = async (req, res) => {
                 msg: 'La receta ya está en favoritos'
             });
         }
+        // Convertir el id string en un objectId (?)
+        const objectId = new mongoose.Types.ObjectId(recipeId);
         // Si no la tiene, añadirla
-        user.favorites.push(recipeId);
+        user.favorites.push(objectId);
         await user.save();
         return res.status(201).json({
             ok: true,
@@ -218,7 +228,8 @@ const removeRecipeFromFavorite = async (req, res) => {
 const getAllFavoriteRecipes = async (req, res) => {
     const { id } = req.params;
     try {
-        const user = await User.findById(id);
+        // Mongoose busca esos IDs en la colección recipes y los reemplaza por los documentos completos
+        const user = await User.findById(id).populate('favorites');
         return res.status(200).json({
             ok: true,
             favorites: user.favorites

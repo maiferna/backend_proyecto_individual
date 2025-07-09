@@ -9,13 +9,14 @@ const saveUserUid = async (req, res) => {
         let user = await User.findOne({ firebaseUid });
         if (!user) {
             user = new User({
-                firebaseUid,
+                _id: firebaseUid,
                 name,
                 email,
                 role
             })
             await user.save();
         }
+        console.log('USER', user)
         let token;
         await createToken(user._id, user.role)
             .then((resp) => {token = resp})

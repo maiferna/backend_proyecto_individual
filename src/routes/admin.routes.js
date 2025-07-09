@@ -17,8 +17,8 @@ const router = Router();
 router.post('/create', [
     upload.single('image'),
     check("name", "name es requerido").notEmpty().isString(),
-    check("ingredients", "ingredients es requerida").notEmpty(),
-    check("prepTime", "prepTime es requerida").notEmpty().isString(),
+    /*check("ingredients", "ingredients es requerida").notEmpty(),*/
+    check("time", "time es requerida").notEmpty().isString(),
     check("difficulty", "difficulty es requerido").notEmpty().isString(),
     check("steps", "steps es requerido").notEmpty().isString(),
     validateInput],

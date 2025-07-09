@@ -20,6 +20,7 @@ const createRecipe = async (req, res) => {
             msg: 'La receta ya existe.'
         })
     }
+
     try {
         const recipe = new Recipe(data);
         const savedRecipe = await recipe.save();
