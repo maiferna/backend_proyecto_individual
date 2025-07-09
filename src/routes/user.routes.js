@@ -7,7 +7,8 @@ const {
     getRecipeById,
     addRecipeToFavorite,
     removeRecipeFromFavorite,
-    getAllFavoriteRecipes
+    getAllFavoriteRecipes,
+    getRecipesByName
 } = require('../controllers/user.controllers');
 
 const { validateInput } = require('../middlewares/validateInput');
@@ -22,6 +23,10 @@ router.get('/recipes', getAllRecipes);
 // Obtener recetas por categoría
 // GET: http://localhost:3000/api/v1/recipes/:category
 router.get('/recipes/:category', getRecipesByCategory);
+
+// Obtener recetas por nombre
+// GET: http://localhost:3000/api/v1/recipes/name/:name
+router.get('/recipes/name/:name', getRecipesByName);
 
 // Obtener recetas por ingredientes
 // POST: http://localhost:3000/api/v1/recipes/ingredients

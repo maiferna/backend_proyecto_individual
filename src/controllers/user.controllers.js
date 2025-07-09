@@ -46,6 +46,33 @@ const getRecipesByCategory = async (req, res) => {
 }
 
 
+// Función que devuelve recetas por nombre. 
+// Recibe el nombre de la url
+const getRecipesByName = async (req, res) => {
+    const { name } = req.params;
+    try {
+        // crea una expresión regular basada en el valor que le pasas (por ejemplo, "ensalada") y la i significa insensitive (no distingue entre mayúsculas y minúsculas).
+        const recipes = await Recipe.find({ name: new RegExp(name, 'i') })
+        if (recipes.length === 0) {
+            return res.status(404).json({
+                ok: false,
+                msg: "No hemos encontrado ninguna receta en ese nombre."
+            })
+        }
+        return res.status(200).json({
+            ok: true,
+            recipes
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Contacte con el administrador'
+        })
+    }
+}
+
+
 // Función que devuelve recetas según los ingredientes que se le pasen
 // Si no ingresa ningún ingrediente, ingresa solo uno o más de 7 (esto no puede), mensaje de error
 // Una vez ingresados, se buscan las recetas y se filtran para que devuelva solo las que tienen por lo menos 2 ingredientes coincidentes
@@ -209,6 +236,7 @@ const getAllFavoriteRecipes = async (req, res) => {
 module.exports = {
     getAllRecipes,
     getRecipesByCategory,
+    getRecipesByName,
     getRecipesByIngredients,
     getRecipeById,
     addRecipeToFavorite,
