@@ -31,8 +31,8 @@ router.get('/recipes/name/:name', getRecipesByName);
 // Obtener recetas por ingredientes
 // POST: http://localhost:3000/api/v1/recipes/ingredients
 router.post('/recipes/ingredients',
-    check("ingredients", "ingredients es requerido").notEmpty(),
-    validateInput,
+    /* check("ingredients", "ingredients es requerido").notEmpty(),
+    validateInput, */
     getRecipesByIngredients);
 
 // Obtener información de la receta por id

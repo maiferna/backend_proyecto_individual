@@ -4,10 +4,6 @@ const User = new Schema({
     _id: {
         type: String
     },
-    firebaseUid: {
-        type: String,
-        unique: true
-    },
     name: {
         type: String,
         required: true

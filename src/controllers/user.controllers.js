@@ -80,6 +80,7 @@ const getRecipesByName = async (req, res) => {
 // Recibe lo ingredientes del body (formulario)
 const getRecipesByIngredients = async (req, res) => {
     const { ingredients } = req.body;
+    console.log('Ingredientes recibidos:', ingredients);
     if (!ingredients) {
         return res.status(400).json({
             ok: false,
@@ -88,8 +89,8 @@ const getRecipesByIngredients = async (req, res) => {
     }
     // Esto gestionarlo en el front
     if (ingredients.length === 1) {
-        return res.status(200).json({
-            ok: true,
+        return res.status(400).json({
+            ok: false,
             msg: 'Igual va siendo hora de hacer la compra...'
         })
     }
@@ -101,7 +102,7 @@ const getRecipesByIngredients = async (req, res) => {
     }
     try {
         const recipes = await Recipe.find({ "ingredients.name": { $in: ingredients } });
-        const filteredRecipes = recipes.filter((recipe) => recipe.ingredients.length > 2)
+        const filteredRecipes = recipes.filter((recipe) => recipe.ingredients.length >= 2)
         if (filteredRecipes.length === 0) {
             return res.status(404).json({
                 ok: false,
@@ -110,7 +111,7 @@ const getRecipesByIngredients = async (req, res) => {
         }
         return res.status(200).json({
             ok: true,
-            filteredRecipes
+            recipes: filteredRecipes
         })
     } catch (error) {
         console.log(error);
