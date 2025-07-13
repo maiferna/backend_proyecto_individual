@@ -80,18 +80,11 @@ const getRecipesByName = async (req, res) => {
 // Recibe lo ingredientes del body (formulario)
 const getRecipesByIngredients = async (req, res) => {
     const { ingredients } = req.body;
-    console.log('Ingredientes recibidos:', ingredients);
-    if (!ingredients) {
+    // console.log('Ingredientes recibidos:', ingredients);
+    if (ingredients.length === 0) {
         return res.status(400).json({
             ok: false,
             msg: 'Es necesario ingresar al menos un ingrediente.'
-        })
-    }
-    // Esto gestionarlo en el front
-    if (ingredients.length === 1) {
-        return res.status(400).json({
-            ok: false,
-            msg: 'Igual va siendo hora de hacer la compra...'
         })
     }
     if (ingredients.length > 8) {
@@ -102,8 +95,7 @@ const getRecipesByIngredients = async (req, res) => {
     }
     try {
         const recipes = await Recipe.find({ "ingredients.name": { $in: ingredients } });
-        const filteredRecipes = recipes.filter((recipe) => recipe.ingredients.length >= 2)
-        if (filteredRecipes.length === 0) {
+        if (recipes.length === 0) {
             return res.status(404).json({
                 ok: false,
                 msg: "No hemos encontrado ninguna receta con esos ingredientes."
@@ -111,7 +103,7 @@ const getRecipesByIngredients = async (req, res) => {
         }
         return res.status(200).json({
             ok: true,
-            recipes: filteredRecipes
+            recipes
         })
     } catch (error) {
         console.log(error);
@@ -186,6 +178,7 @@ const addRecipeToFavorite = async (req, res) => {
         // Si no la tiene, añadirla
         user.favorites.push(objectId);
         await user.save();
+        await user.populate('favorites');
         return res.status(201).json({
             ok: true,
             favorites: user.favorites
@@ -210,6 +203,8 @@ const removeRecipeFromFavorite = async (req, res) => {
         const user = await User.findById(userId);
         user.favorites = user.favorites.filter((id) => id.toString() != recipeId)
         await user.save();
+        // En vez de devolver los id de las recetas favoritas, con populate se referencia la receta y se devuelve completa
+        await user.populate('favorites');
         return res.status(201).json({
             ok: true,
             favorites: user.favorites

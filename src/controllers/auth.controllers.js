@@ -24,7 +24,8 @@ const getUser = async (req, res) => {
 
 const saveUserUid = async (req, res) => {
     //console.log('PETICION', req.body)
-    console.log("Datos recibidos en /sync:", req.body);
+    //console.log("Datos recibidos en /sync:", req.body);
+    //console.log('Datos recibidos en /auth/sync:', req.body); // 👈 esto
 
     const { firebaseUid, name, email, role } = req.body;
     //console.log('ID FIREBASE', firebaseUid)
@@ -33,13 +34,13 @@ const saveUserUid = async (req, res) => {
         if (!user) {
             user = new User({
                 _id: firebaseUid,
-                name,
+                name: name,
                 email,
                 role
             })
             await user.save();
         }
-        console.log('USER', user)
+        //console.log('USER', user)
         let token;
         await createToken(user._id, user.role)
             .then((resp) => { token = resp })
@@ -49,7 +50,7 @@ const saveUserUid = async (req, res) => {
                     msg: "Error al generar el token."
                 })
             })
-        console.log("Token generado:", token);
+        //console.log("Token generado:", token);
         return res.status(200).json({
             ok: true,
             user,

@@ -1,6 +1,7 @@
 
 const Recipe = require('../models/recipe.model')
-const User = require('../models/user.model')
+const User = require('../models/user.model');
+const { parseFormData } = require('../utils/parseFormData');
 
 // Función para crear una receta
 // Recibe la data del formulario y la imagen del req.file
@@ -8,20 +9,16 @@ const User = require('../models/user.model')
 // Comprueba si la receta existe, si existe no la crea
 // Sino crea la nueva receta
 const createRecipe = async (req, res) => {
-    const data = req.body;
-    const image = req.file;
-    if (image) {
-        data.image = image.filename;
-    }
-    const recipeExists = await Recipe.findOne({ name: data.name })
-    if (recipeExists) {
-        return res.status(404).json({
-            ok: false,
-            msg: 'La receta ya existe.'
-        })
-    }
 
     try {
+        const data = parseFormData(req.body, req.file);
+        const recipeExists = await Recipe.findOne({ name: data.name })
+        if (recipeExists) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'La receta ya existe.'
+            })
+        }
         const recipe = new Recipe(data);
         const savedRecipe = await recipe.save();
         return res.status(201).json({
@@ -44,20 +41,17 @@ const createRecipe = async (req, res) => {
 // Actualiza la receta. new: true se utiliza para devolver el objeto actualizado
 const editRecipe = async (req, res) => {
     const { id } = req.params;
-    const body = req.body;
-    const image = req.file;
-    if (image) {
-        data.image = image.filename;
-    }
-    const recipeExists = await Recipe.findById(id);
-    if (!recipeExists) {
-        return res.status(404).json({
-            ok: false,
-            msg: 'La receta no existe.'
-        })
-    }
+
     try {
-        const recipe = await Recipe.findByIdAndUpdate(id, body, { new: true });
+        const data = parseFormData(req.body, req.file);
+        const recipeExists = await Recipe.findById(id);
+        if (!recipeExists) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'La receta no existe.'
+            })
+        }
+        const recipe = await Recipe.findByIdAndUpdate(id, data, { new: true });
         return res.status(201).json({
             ok: true,
             recipe
@@ -146,7 +140,7 @@ const editUser = async (req, res) => {
 
 
 const deleteUser = async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     try {
         const user = await User.findById(id);
@@ -156,7 +150,7 @@ const deleteUser = async (req, res) => {
                 msg: 'Usuario no encontrado.'
             })
         }
-        const data = await User.deleteOne({_id: id});
+        const data = await User.deleteOne({ _id: id });
         return res.status(200).json({
             ok: true,
             msg: "Usuario eliminado."
