@@ -3,11 +3,11 @@ const { Schema, model } = require('mongoose');
 const Menu = new Schema({
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'Users'
     },
     recipes: [{
         type: Schema.Types.ObjectId,
-        ref: 'Recipe'
+        ref: 'Recipes'
     }],
     shoplist: [{
         name: {

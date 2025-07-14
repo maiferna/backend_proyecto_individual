@@ -1,6 +1,9 @@
 const { Schema, model } = require('mongoose');
 
 const User = new Schema({
+    _id: {
+        type: String
+    },
     name: {
         type: String,
         required: true
@@ -22,11 +25,11 @@ const User = new Schema({
     // ObjectId: tipo de dato que actúa como identificador único para cada documento en una colección
     favorites: [{
         type: Schema.Types.ObjectId,
-        ref: 'Recipe'
+        ref: 'Recipes'
     }],
     menu: {
         type: Schema.Types.ObjectId,
-        ref: 'Menu'
+        ref: 'Menus'
     }
 })
 
