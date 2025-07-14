@@ -3,8 +3,6 @@ const express = require('express');
 
 const cors = require('cors');
 const path = require('path');
-// const { swaggerUi, swagger } = require('../swagger');
-
 
 const userRoutes = require('./routes/user.routes');
 const adminRoutes = require('./routes/admin.routes');

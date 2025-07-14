@@ -10,6 +10,8 @@ const {
     deleteUser
 } = require('../controllers/admin.controllers');
 const { validateInput } = require('../middlewares/validateInput');
+const { verifyToken } = require('../middlewares/verifyToken');
+const { verifyRole } = require('../middlewares/verifyRole');
 const router = Router();
 
 // Crear una receta nueva
@@ -17,20 +19,28 @@ const router = Router();
 router.post('/create', [
     upload.single('image'),
     check("name", "name es requerido").notEmpty().isString(),
-    /*check("ingredients", "ingredients es requerida").notEmpty(),*/
+    check("ingredients", "ingredients es requerida").notEmpty(),
     check("time", "time es requerida").notEmpty().isString(),
     check("difficulty", "difficulty es requerido").notEmpty().isString(),
     check("steps", "steps es requerido").notEmpty().isString(),
-    validateInput],
-    createRecipe)
+    validateInput
+], createRecipe)
 
 // Editar receta según su id (PUT)
 // PUT: http://localhost:3000/api/v1/admin/edit/:id
-router.put('/edit/:id', upload.single('image'), editRecipe)
+router.put('/edit/:id', [
+    upload.single('image'),
+    check("name", "name es requerido").notEmpty().isString(),
+    check("ingredients", "ingredients es requerida").notEmpty(),
+    check("time", "time es requerida").notEmpty().isString(),
+    check("difficulty", "difficulty es requerido").notEmpty().isString(),
+    check("steps", "steps es requerido").notEmpty().isString(),
+    validateInput
+], editRecipe)
 
 // Eliminar receta por su id (DELETE)
 // DELETE: http://localhost:3000/api/v1/admin/delete/:id
-router.delete('/delete/:id', deleteRecipe)
+router.delete('/delete/:id', [verifyToken, verifyRole('admin')], deleteRecipe)
 
 // Obtener usuarios
 // GET: http://localhost:3000/api/v1/admin/users

@@ -13,6 +13,8 @@ const {
 
 const { validateInput } = require('../middlewares/validateInput');
 const { check } = require('express-validator');
+const { verifyToken } = require('../middlewares/verifyToken');
+const { verifyRole } = require('../middlewares/verifyRole');
 
 const router = Router();
 
@@ -30,10 +32,10 @@ router.get('/recipes/name/:name', getRecipesByName);
 
 // Obtener recetas por ingredientes
 // POST: http://localhost:3000/api/v1/recipes/ingredients
-router.post('/recipes/ingredients',
-    /* check("ingredients", "ingredients es requerido").notEmpty(),
-    validateInput, */
-    getRecipesByIngredients);
+router.post('/recipes/ingredients', [
+    check("ingredients", "ingredients es requerido").notEmpty(),
+    validateInput
+    ], getRecipesByIngredients);
 
 // Obtener información de la receta por id
 // GET: http://localhost:3000/api/v1/recipe/:id
@@ -41,11 +43,11 @@ router.get('/recipe/:id', getRecipeById);
 
 // Añadir receta a favoritos
 // POST: http://localhost:3000/api/v1/favorite/user/:id
-router.post('/favorite/user/:id', addRecipeToFavorite);
+router.post('/favorite/user/:id', [verifyToken, verifyRole('user')], addRecipeToFavorite);
 
 // Eliminar receta de favoritos
 // DELETE: http://localhost:3000/api/v1/favorite/user/:id
-router.delete('/favorite/user/:id', removeRecipeFromFavorite);
+router.delete('/favorite/user/:id', [verifyToken, verifyRole('user')], removeRecipeFromFavorite);
 
 // Obtener recetas favoritas
 // GET: http://localhost:3000/api/v1/favorite/user/:id

@@ -6,6 +6,6 @@ const router = Router();
 
 router.post('/sync', saveUserUid)
 
-router.get('/user', verifyToken, getUser)
+router.post('/user', /* , */ getUser)
 
 module.exports = router;

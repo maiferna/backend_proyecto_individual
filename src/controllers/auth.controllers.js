@@ -2,17 +2,28 @@ const User = require('../models/user.model');
 const { createToken } = require('../utils/createToken');
 
 const getUser = async (req, res) => {
+    const { firebaseUid } = req.body
     try {
-        const user = await User.findById(req.uid);
+        const user = await User.findOne({ _id: firebaseUid });
         if (!user) {
             return res.status(404).json({
                 ok: false,
                 msg: "Usuario no encontrado."
             })
         }
+        let token;
+        await createToken(user._id, user.role)
+            .then((resp) => { token = resp })
+            .catch((error) => {
+                return res.status(403).json({
+                    ok: false,
+                    msg: "Error al generar el token."
+                })
+            })
         return res.status(200).json({
             ok: true,
-            user
+            user,
+            token
         })
     } catch (error) {
         return res.status(500).json({
@@ -23,10 +34,6 @@ const getUser = async (req, res) => {
 }
 
 const saveUserUid = async (req, res) => {
-    //console.log('PETICION', req.body)
-    //console.log("Datos recibidos en /sync:", req.body);
-    //console.log('Datos recibidos en /auth/sync:', req.body); // 👈 esto
-
     const { firebaseUid, name, email, role } = req.body;
     //console.log('ID FIREBASE', firebaseUid)
     try {
@@ -34,13 +41,13 @@ const saveUserUid = async (req, res) => {
         if (!user) {
             user = new User({
                 _id: firebaseUid,
-                name: name,
+                name,
                 email,
                 role
             })
             await user.save();
+            console.log('USER BACK', user)
         }
-        //console.log('USER', user)
         let token;
         await createToken(user._id, user.role)
             .then((resp) => { token = resp })
