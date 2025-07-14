@@ -1,4 +1,10 @@
 
+/**
+ * Función para parsear los datos recibidos a FormData
+ * @param {Object} body Objeto JSON
+ * @param {Object} file Objeto file
+ * @returns Devuelve la data en formato FormData
+ */
 const parseFormData = (body, file) => {
     const data = {...body};
     if (file) {
@@ -10,15 +16,12 @@ const parseFormData = (body, file) => {
     try {
         if (typeof data.ingredients === 'string') {
             data.ingredients = JSON.parse(data.ingredients);
-            console.log(typeof data.ingredients, data.ingredients);
         }
         if (typeof data.category === 'string') {
             data.category = JSON.parse(data.category);
-            console.log(typeof data.category, data.category);
         }
         if (typeof data.intolerance === 'string') {
             data.intolerance = JSON.parse(data.intolerance);
-            console.log(typeof data.intolerance, data.intolerance);
         }
     } catch (error) {
         throw new Error('Error al parsear la data.')

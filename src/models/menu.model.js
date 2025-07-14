@@ -1,5 +1,8 @@
 const { Schema, model } = require('mongoose');
 
+/**
+ * Modelo del menú
+ */
 const Menu = new Schema({
     user: {
         type: Schema.Types.ObjectId,

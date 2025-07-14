@@ -1,7 +1,13 @@
 
 const jwt = require('jsonwebtoken');
 
-
+/**
+ * Función para validar un token
+ * @param {Object} req Requerimiento. Datos de la solicitud.
+ * @param {Object} res Respuesta
+ * @param {Function} next Ejecuta la siguiente función
+ * @returns Si el token es válido, almacena el rol y el id del usuario en el requerimiento
+ */
 const verifyToken = (req, res, next) => {
     const header = req.header('Authorization');
     console.log('HEADER TOKEN BACK', header);

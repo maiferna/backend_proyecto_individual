@@ -1,6 +1,12 @@
 const User = require('../models/user.model');
 const { createToken } = require('../utils/createToken');
 
+/**
+ * Función para recoger un usuario por su id.
+ * @param {Object} req Requerimiento. Datos de la solicitud.
+ * @param {Object} res Respuesta.
+ * @returns Devuelve el usuario encontrado y le genera un token.
+ */
 const getUser = async (req, res) => {
     const { firebaseUid } = req.body
     try {
@@ -33,9 +39,14 @@ const getUser = async (req, res) => {
     }
 }
 
+/**
+ * Función para almacenar el usuario de Firebase en la base de datos de Mongo.
+ * @param {Object} req Requerimiento. Datos de la solicitud.
+ * @param {Object} res Respuesta.
+ * @returns Almacena el usuario en la base de datos y devuelve el token generado.
+ */
 const saveUserUid = async (req, res) => {
     const { firebaseUid, name, email, role } = req.body;
-    //console.log('ID FIREBASE', firebaseUid)
     try {
         let user = await User.findById(firebaseUid);
         if (!user) {
@@ -46,7 +57,6 @@ const saveUserUid = async (req, res) => {
                 role
             })
             await user.save();
-            console.log('USER BACK', user)
         }
         let token;
         await createToken(user._id, user.role)
@@ -57,7 +67,6 @@ const saveUserUid = async (req, res) => {
                     msg: "Error al generar el token."
                 })
             })
-        //console.log("Token generado:", token);
         return res.status(200).json({
             ok: true,
             user,

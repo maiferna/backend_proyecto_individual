@@ -3,7 +3,6 @@
  * @param {String} requiredRole Rol del usuario
  * @returns Ejecuta la siguiente función si el rol tiene acceso autorizado
  */
-
 const verifyRole = (requiredRole) => {
     return (req, res, next) => {
         if (!req.role) {

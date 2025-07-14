@@ -1,10 +1,9 @@
 
-
 const mongoose = require('mongoose');
 
 /**
  * Conectar a la base de datos
- * 
+ * Establece la conexión con el método connect que recibe como argumento la uri de Mongo
  */
 const connection = async () => {
     

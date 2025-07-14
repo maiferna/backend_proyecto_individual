@@ -1,4 +1,6 @@
-
+/**
+ * Importaciones
+ */
 const { Router } = require('express');
 const {
     getAllRecipes,
@@ -18,41 +20,64 @@ const { verifyRole } = require('../middlewares/verifyRole');
 
 const router = Router();
 
-// Obtener recetas
-// GET: http://localhost:3000/api/v1/recipes
+
+/**
+ * Obtener recetas
+ * GET: http://localhost:3000/api/v1/recipes
+ */
 router.get('/recipes', getAllRecipes);
 
-// Obtener recetas por categoría
-// GET: http://localhost:3000/api/v1/recipes/:category
+
+/**
+ * Obtener recetas por categoría
+ * GET: http://localhost:3000/api/v1/recipes/:category
+ */
 router.get('/recipes/:category', getRecipesByCategory);
 
-// Obtener recetas por nombre
-// GET: http://localhost:3000/api/v1/recipes/name/:name
+
+/**
+ * Obtener recetas por nombre
+ * GET: http://localhost:3000/api/v1/recipes/name/:name
+ */
 router.get('/recipes/name/:name', getRecipesByName);
 
-// Obtener recetas por ingredientes
-// POST: http://localhost:3000/api/v1/recipes/ingredients
+
+/**
+ * Obtener recetas por ingredientes
+ * POST: http://localhost:3000/api/v1/recipes/ingredients
+ */
 router.post('/recipes/ingredients', [
     check("ingredients", "ingredients es requerido").notEmpty(),
     validateInput
     ], getRecipesByIngredients);
 
-// Obtener información de la receta por id
-// GET: http://localhost:3000/api/v1/recipe/:id
+
+/**
+ * Obtener información de la receta por id
+ * GET: http://localhost:3000/api/v1/recipe/:id
+ */
 router.get('/recipe/:id', getRecipeById);
 
-// Añadir receta a favoritos
-// POST: http://localhost:3000/api/v1/favorite/user/:id
+
+/**
+ * Añadir receta a favoritos
+ * POST: http://localhost:3000/api/v1/favorite/user/:id
+ */
 router.post('/favorite/user/:id', [verifyToken, verifyRole('user')], addRecipeToFavorite);
 
-// Eliminar receta de favoritos
-// DELETE: http://localhost:3000/api/v1/favorite/user/:id
+
+/**
+ * Eliminar receta de favoritos
+ * DELETE: http://localhost:3000/api/v1/favorite/user/:id
+ */
 router.delete('/favorite/user/:id', [verifyToken, verifyRole('user')], removeRecipeFromFavorite);
 
-// Obtener recetas favoritas
-// GET: http://localhost:3000/api/v1/favorite/user/:id
-router.get('/favorite/user/:id', getAllFavoriteRecipes);
 
+/**
+ * Obtener recetas favoritas
+ * GET: http://localhost:3000/api/v1/favorite/user/:id
+ */
+router.get('/favorite/user/:id', getAllFavoriteRecipes);
 
 
 module.exports = router;

@@ -1,6 +1,9 @@
 
 const { Schema, model } = require('mongoose');
 
+/**
+ * Modelo de la receta
+ */
 const Recipe = new Schema({
     name: {
         type: String,

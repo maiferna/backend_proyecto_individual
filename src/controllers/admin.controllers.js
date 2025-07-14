@@ -3,13 +3,14 @@ const Recipe = require('../models/recipe.model')
 const User = require('../models/user.model');
 const { parseFormData } = require('../utils/parseFormData');
 
-// Función para crear una receta
-// Recibe la data del formulario y la imagen del req.file
-// Guarda en la imagen el nombre del archivo
-// Comprueba si la receta existe, si existe no la crea
-// Sino crea la nueva receta
-const createRecipe = async (req, res) => {
 
+/**
+ * Función para crear una receta.
+ * @param {Object} req Requerimiento. Datos del formulario.
+ * @param {Object} res Respuesta.
+ * @returns Devuelve la receta creada.
+ */
+const createRecipe = async (req, res) => {
     try {
         const data = parseFormData(req.body, req.file);
         const recipeExists = await Recipe.findOne({ name: data.name })
@@ -35,10 +36,13 @@ const createRecipe = async (req, res) => {
 }
 
 
-// Función para editar una receta
-// Recibe el id de la receta de la url, el body del formulario y la imagen del req.file
-// Comprueba que la receta exista
-// Actualiza la receta. new: true se utiliza para devolver el objeto actualizado
+
+/**
+ * Función para editar una receta.
+ * @param {Object} req Requerimiento. Datos de la solicitud.
+ * @param {Object} res Respuesta.
+ * @returns Devuelve la receta actualizada con {new: true}.
+ */
 const editRecipe = async (req, res) => {
     const { id } = req.params;
 
@@ -66,9 +70,12 @@ const editRecipe = async (req, res) => {
 }
 
 
-// Función para eliminar una receta
-// Recibe el id de la receta de la url
-// Comprueba que la receta exista, si existe la elimina
+/**
+ * Función para eliminar una receta
+ * @param {Object} req Requerimiento. Datos de la solicitud.
+ * @param {Object} res Respuesta.
+ * @returns Elimina la receta.
+ */
 const deleteRecipe = async (req, res) => {
     const { id } = req.params;
     const recipeExists = await Recipe.findById(id);
@@ -93,7 +100,12 @@ const deleteRecipe = async (req, res) => {
     }
 }
 
-
+/**
+ * Función para recoger todos los usuarios.
+ * @param {Object} req Requerimiento.
+ * @param {Object} res Respuesta.
+ * @returns Devuelve todos los usuarios.
+ */
 const getAllUsers = async (req, res) => {
     try {
         const users = await User.find()
@@ -111,10 +123,15 @@ const getAllUsers = async (req, res) => {
 }
 
 
+/**
+ * Función para editar usuarios.
+ * @param {Object} req Requerimiento. Datos de la solicitud.
+ * @param {Object} res Respuesta.
+ * @returns Devuelve el usuario con los datos actualizados.
+ */
 const editUser = async (req, res) => {
     const { id } = req.params;
     const { role } = req.body;
-    console.log('ROL', role)
     try {
         const user = await User.findById(id);
         if (!user) {
@@ -139,6 +156,12 @@ const editUser = async (req, res) => {
 }
 
 
+/**
+ * Función para eliminar un usuario.
+ * @param {Object} req Requerimiento. Datos de los parámetros.
+ * @param {Object} res Respuesta.
+ * @returns Devuelve un mensaje de que el usuario se ha eliminado correctamente.
+ */
 const deleteUser = async (req, res) => {
     const { id } = req.params;
 
