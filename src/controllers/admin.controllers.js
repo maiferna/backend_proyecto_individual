@@ -36,12 +36,11 @@ const createRecipe = async (req, res) => {
 }
 
 
-
 /**
  * Función para editar una receta.
  * @param {Object} req Requerimiento. Datos de la solicitud.
  * @param {Object} res Respuesta.
- * @returns Devuelve la receta actualizada con {new: true}.
+ * @returns Devuelve la receta actualizada con new: true.
  */
 const editRecipe = async (req, res) => {
     const { id } = req.params;
